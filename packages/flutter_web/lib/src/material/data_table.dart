@@ -8,18 +8,6 @@ import 'package:flutter_web/foundation.dart';
 import 'package:flutter_web/rendering.dart';
 import 'package:flutter_web/widgets.dart';
 
-import 'checkbox.dart';
-import 'colors.dart';
-import 'debug.dart';
-import 'divider.dart';
-import 'dropdown.dart';
-import 'icons.dart';
-import 'ink_well.dart';
-import 'material.dart';
-import 'theme.dart';
-import 'theme_data.dart';
-import 'tooltip.dart';
-
 /// Signature for [DataColumn.onSort] callback.
 typedef DataColumnSortCallback = void Function(int columnIndex, bool ascending);
 
@@ -89,6 +77,7 @@ class DataRow {
     this.key,
     this.selected = false,
     this.onSelectChanged,
+    this.showCheckbox = true,
     @required this.cells,
   }) : assert(cells != null);
 
@@ -100,6 +89,7 @@ class DataRow {
     int index,
     this.selected = false,
     this.onSelectChanged,
+    this.showCheckbox = true,
     @required this.cells,
   })  : assert(cells != null),
         key = ValueKey<int>(index);
@@ -126,6 +116,7 @@ class DataRow {
   /// the purposes of determining the state of the "all" checkbox,
   /// and its checkbox is disabled.
   final ValueChanged<bool> onSelectChanged;
+  final bool showCheckbox;
 
   /// Whether the row is selected.
   ///
@@ -521,7 +512,7 @@ class DataTable extends StatelessWidget {
     );
 
     final bool showCheckboxColumn =
-        rows.any((DataRow row) => row.onSelectChanged != null);
+        rows.any((DataRow row) => row.onSelectChanged != null && row.showCheckbox);
     final bool allChecked = showCheckboxColumn &&
         !rows
             .any((DataRow row) => row.onSelectChanged != null && !row.selected);
